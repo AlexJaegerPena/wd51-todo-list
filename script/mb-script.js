@@ -1,121 +1,112 @@
 const inputBox = document.getElementById("mb-input-box");
+const mbForm = document.getElementById("mbForm");
 const addBtn = document.querySelector(".add-btn");
 const mbTasksContainer = document.getElementById("mb-task-container");
 
-const addTask = () => {
-  if (inputBox.value === "") {
+// Tasks Array and local store
+let arrFromLocal = JSON.parse(localStorage.getItem("mbtask-list")) || [];
+
+// AddEventListener in form input
+mbForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+  inputValidation();
+});
+
+// Input data Validation
+const inputValidation = () => {
+  addBtn.innerHTML = "Add";
+  let taskName = inputBox.value;
+  if (taskName === "") {
     alert("Please add your task. Your task input area is empty!");
+    return;
   } else {
-    // create task li element here
-    let mbTaskListElm = document.createElement("li");
-    mbTaskListElm.classList.add("mb-task");
-    mbTasksContainer.appendChild(mbTaskListElm);
-
-    // create main task div element inside li element here
-    const mbTaskDivContainer = document.createElement("div");
-    mbTaskListElm.appendChild(mbTaskDivContainer);
-
-    // create task name div element inside main div element here
-    const mbTaskNameDiv = document.createElement("div");
-    mbTaskNameDiv.classList.add("mb-task-name");
-    mbTaskDivContainer.appendChild(mbTaskNameDiv);
-
-    // create P tag inside task-name div elmt
-    const mbTaskPara = document.createElement("p");
-    mbTaskPara.classList.add("mb-checked");
-    mbTaskPara.innerHTML = inputBox.value;
-    mbTaskNameDiv.appendChild(mbTaskPara);
-
-    // create another main div for task status container
-    const mbTaskStatusDivContainer = document.createElement("div");
-    mbTaskStatusDivContainer.classList.add("mb-task-status-area");
-    mbTaskDivContainer.appendChild(mbTaskStatusDivContainer);
-
-    // create task status-complete div for task complete section
-    const mbTaskCompleteDiv = document.createElement("div");
-    mbTaskCompleteDiv.classList.add("mb-task-status");
-    mbTaskStatusDivContainer.appendChild(mbTaskCompleteDiv);
-
-    // create icon for complete status
-    const mbTaskCompletIcon1 = document.createElement("i");
-    mbTaskCompletIcon1.classList.add(
-      "fa-regular",
-      "fa-square-check",
-      "status-check"
-    );
-    mbTaskCompleteDiv.appendChild(mbTaskCompletIcon1);
-
-    const mbTaskCompletIcon2 = document.createElement("i");
-    mbTaskCompletIcon2.classList.add(
-      "fa-regular",
-      "fa-square",
-      "status-uncheck"
-    );
-    mbTaskCompleteDiv.appendChild(mbTaskCompletIcon2);
-
-    // create P for complete status
-    const mbTaskCompletePara = document.createElement("p");
-    mbTaskCompletePara.innerText = "Incomplete";
-    mbTaskCompleteDiv.appendChild(mbTaskCompletePara);
-
-    // Complet task button work
-    mbTaskCompleteDiv.addEventListener("click", () => {
-      mbTaskPara.style.color = "red";
-      mbTaskPara.style.textDecoration = "line-through";
-      mbTaskCompletePara.innerText = "Complete";
-      mbTaskCompletIcon1.style.display = "block";
-      mbTaskCompletIcon2.style.display = "none";
-      mbTaskCompleteDiv.style.backgroundColor = "#949494";
-      mbTaskEditDiv.style.display = "none";
-
-      console.log("complete area clickecd");
-    });
-
-    // edit div create
-    const mbTaskEditDiv = document.createElement("div");
-    mbTaskEditDiv.classList.add("mb-task-edit");
-    mbTaskStatusDivContainer.appendChild(mbTaskEditDiv);
-
-    // Edit button work
-    mbTaskEditDiv.addEventListener("click", () => {
-      inputBox.value = mbTaskPara.innerText;
-      const parent = mbTaskEditDiv.parentElement;
-      parent.parentElement.remove();
-    });
-
-    const mbTaskEditIcon = document.createElement("i");
-    mbTaskEditIcon.classList.add("fa-regular", "fa-pen-to-square");
-    mbTaskEditDiv.appendChild(mbTaskEditIcon);
-
-    // create P for edit status
-    const mbTaskEditPara = document.createElement("p");
-    mbTaskEditPara.innerText = "Edit";
-    mbTaskEditDiv.appendChild(mbTaskEditPara);
-
-    // Delete div create
-    const mbTaskDeleteDiv = document.createElement("div");
-    mbTaskDeleteDiv.classList.add("mb-task-delete");
-    mbTaskStatusDivContainer.appendChild(mbTaskDeleteDiv);
-
-    // Delete button work
-    mbTaskDeleteDiv.addEventListener("click", () => {
-      alert("Do you realy want to delete your task?");
-      const parent = mbTaskDeleteDiv.parentElement;
-      parent.parentElement.remove();
-    });
-
-    const mbTaskDeleteIcon = document.createElement("i");
-    mbTaskDeleteIcon.classList.add("fa-regular", "fa-trash-can");
-    mbTaskDeleteDiv.appendChild(mbTaskDeleteIcon);
-
-    // create P for edit status
-    const mbTaskDeletePara = document.createElement("p");
-    mbTaskDeletePara.innerText = "Delete";
-    mbTaskDeleteDiv.appendChild(mbTaskDeletePara);
-
-    console.log(inputBox.value);
+    arrFromLocal.unshift(taskName);
+    localStorage.setItem("mbtask-list", JSON.stringify(arrFromLocal));
+    createTasksMb();
     inputBox.value = "";
   }
 };
 
-addBtn.addEventListener("click", addTask);
+// create tasks
+function createTasksMb() {
+  let htmlOutput = "";
+  arrFromLocal.map((task, index) => {
+    htmlOutput += `<li id =${index} class="mb-task">
+      <div>
+      <div class="mb-task-name">
+      <p class="mb-checked">
+      ${task}
+      </p>
+      </div>
+        <div class="mb-task-status-area">
+          <div class="mb-task-status" onclick = "completeTask(this)">
+          <i class="fa-regular fa-square-check status-check"></i>
+          <i class="fa-regular fa-square status-uncheck"></i>
+          <p>Incomplete</p>
+          </div>
+          <div class="mb-task-edit" onclick = "editTask(this)" >
+          <i class="fa-regular fa-pen-to-square"></i>
+          <p>Edit</p>
+          </div>
+          <div id = "deleteBtn" class="mb-task-delete" onclick = "deleteTask(this)">
+          <i class="fa-regular fa-trash-can"></i>
+          <p>Delete</p>
+          </div>
+          </div>
+          </div>
+          </li>`;
+  });
+
+  mbTasksContainer.innerHTML = htmlOutput.trim();
+
+  // console.log(htmlOutput);
+}
+
+// Complete task
+function completeTask(e) {
+  console.log("complete button clicked");
+
+  e.style.backgroundColor = "#e07a5f";
+  const nextElement = e.nextElementSibling;
+  const TaskNameElm = e.parentElement.previousElementSibling;
+  nextElement.remove();
+  e.lastElementChild.innerHTML = "Task is completed";
+  TaskNameElm.style.textDecoration = "line-through";
+  TaskNameElm.style.backgroundColor = "#f5ebe0";
+  TaskNameElm.style.color = "red";
+  e.children.item(0).style.display = "block";
+  e.children.item(1).style.display = "none";
+
+  // console.log(e.parentElement.previousElementSibling);
+  // console.log(e.children.item(0));
+  // console.log(e.children.item(1));
+  // console.log(e.nextElementSibling);
+  // console.log(e.lastElementChild);
+}
+
+// Edit task
+function editTask(e) {
+  console.log("edit button clicked");
+  const taskNamePara = document.querySelector(".mb-checked");
+  inputBox.value = taskNamePara.innerText;
+  addBtn.innerHTML = "Update";
+  deleteTask(e);
+}
+
+// Delete task
+function deleteTask(e) {
+  let selectListContainer = e.parentElement.parentElement.parentElement;
+  selectListContainer.remove();
+
+  // alert("Do you realy want to delete your task?");
+  arrFromLocal.splice(selectListContainer.id, 1);
+  localStorage.setItem("mbtask-list", JSON.stringify(arrFromLocal));
+
+  console.log(`The tast index number is: ${selectListContainer.id}`);
+}
+
+(() => {
+  arrFromLocal = JSON.parse(localStorage.getItem("mbtask-list")) || [];
+  createTasksMb();
+  console.log(arrFromLocal);
+})();
