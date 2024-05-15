@@ -1,0 +1,63 @@
+#aj-list-container li {
+  list-style: none;
+  font-size: 1.1rem;
+  color: rgb(43, 43, 43);
+  background-color: #ffffff;
+  border-radius: 0.5rem;
+  padding-block: 1rem;
+  margin-bottom: 0.5rem;
+  text-align: left;
+  position: relative;
+  padding-left: 3rem;
+}
+
+#aj-list-container li::before {
+  content: "";
+  position: absolute;
+  height: 25px;
+  width: 25px;
+  border-radius: 50%;
+  background-image: url(../images/aj-unchecked.png);
+  background-size: cover;
+  background-position: center;
+  margin-top: -0.1rem;
+  left: 1rem;
+}
+
+ul li#aj-listitem-checked {
+  color: #7573737e;
+  text-decoration: line-through;
+}
+
+ul li#aj-listitem-checked::before {
+  background-image: url(../images/aj-checked.png);
+  filter: saturate(90%);
+}
+
+#aj-input-box {
+  border-radius: 2rem;
+  margin-right: -4rem;
+}
+
+section div button.aj-add-button {
+  background-color: #f25c4a;
+  border-radius: 2rem;
+  padding-left: 2.5rem;
+  padding-right: 2.5rem;
+}
+
+section div button.aj-add-button:hover {
+  background-color: #d83e2d;
+}
+
+#aj-list-container li span {
+  position: absolute;
+  right: 0;
+  top: 5px;
+  width: 400px;
+  height: 40px;
+  font-size: 220px;
+  color: #970000;
+  line-height: 40px;
+  text-align: center;
+}
