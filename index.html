@@ -25,21 +25,31 @@
       <div class="main-container">
         <section class="mb-task-section">
           <h3>Mehedi's Task</h3>
-          <!-- Input area -->
-          <div class="mb-input-btn-container">
+          <form id="mbForm" class="mb-input-btn-container">
             <input type="text" id="mb-input-box" placeholder="type task name" />
             <button class="add-btn">Add</button>
-          </div>
+          </form>
 
-          <!-- Task list area start -->
+          <ul id="mb-task-container"></ul>
+        </section>
+
+        <!-- <section class="mb-task-section">
+          
+        </section> -->
+
+
+        <!-- Nikolay Section -->
+        <section class="mb-task-section">
+          <h3>Nikolay's Task</h3>
+          <form id="nk-form" class="add-form mb-input-btn-container">
+            <input name="task" type="text" placeholder="type task name" required>
+            <button>Add</button>
+          </form>
           <ul id="mb-task-container">
             <!-- <li class="mb-task">
-              <div>
-                <div class="mb-task-name">
-                  <p class="mb-checked">
-                    Here is task name which is coming from input area
-                  </p>
-                </div>
+                <p class="mb-task-name mb-checked">
+                  Here is task name which is coming from input area
+                </p>
                 <div class="mb-task-status-area">
                   <div class="mb-task-status">
                     <i class="fa-regular fa-square-check status-check"></i>
@@ -55,33 +65,14 @@
                     <p>Delete</p>
                   </div>
                 </div>
-              </div>
             </li> -->
-            <!-- One list item end here -->
           </ul>
-        </section>
-
-        <!-- Alex Section -->
-        <section class="mb-task-section">
-          <h3>Alex's Task</h3>
-          <div class="mb-input-btn-container">
-            <input type="text" placeholder="type task name" />
-            <button>Add</button>
-          </div>
-        </section>
-
-        <!-- Nikolay Section -->
-        <section class="mb-task-section">
-          <h3>Nikolay's Task</h3>
-          <div class="mb-input-btn-container">
-            <input type="text" placeholder="type task name" />
-            <button>Add</button>
-          </div>
         </section>
       </div>
     </main>
     <footer class="footer">&copy; 2024 ToDo Project</footer>
 
     <script src="./script/mb-script.js"></script>
+    <script src="./script/nk-script.js"></script>
   </body>
 </html>

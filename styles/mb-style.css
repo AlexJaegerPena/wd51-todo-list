@@ -68,6 +68,18 @@
   box-shadow: 2px 2px 20px rgba(44, 44, 44, 0.3);
 }
 
+.mb-task.mb-task--checked .mb-task-status {
+  background-color: #949494;
+
+  .status-check {
+    display: inline;
+  }
+
+  .status-uncheck {
+    display: none;
+  }
+}
+
 .mb-task-name {
   text-align: left;
   width: 100%;
@@ -75,7 +87,7 @@
   padding: 0.8rem;
   user-select: none;
 
-  p {
+  p, p& {
     font-size: 1.2rem;
     line-height: 1.6rem;
   }
