@@ -1,16 +1,5 @@
 const addFroms = document.querySelectorAll('.add-form');
 
-addFroms.forEach(addFrom => {
-    addFrom.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const taskObj = createTaskObj(addFrom)
-        const taskList = updateStorage(e.target.id, taskObj);
-        fillTaskList(e.target, taskList);
-        addFrom.reset();
-    })
-})
-
-
 // Fill tasks from localStorage on first loading
 const taskIds = [...addFroms].map(addFrom => addFrom.id)
 taskIds.forEach(id => {
@@ -18,21 +7,26 @@ taskIds.forEach(id => {
     fillTaskList(document.getElementById(id), taskList);
 })
 
-// TMP
-const delBtns = document.querySelectorAll('.mb-task-delete');
-console.log(delBtns.length)
-
+// Add event listener for forms submit
+addFroms.forEach(addFrom => {
+    addFrom.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const taskObj = createTaskObj(addFrom)
+        const taskList = updateStorage(e.target.id, taskObj);
+        const curList = addForm.nextElementSibling;
+        curList.append(taskItems);
+        addFrom.reset();
+    })
+})
 
 function fillTaskList(addForm, taskList) {
     const curList = addForm.nextElementSibling;
     curList.innerHTML = '';
-    console.log(taskList)
     const taskItems = taskList.map(t => createTaskItem(t))
     curList.append(...taskItems);
 }
 
 function updateStorage(itemName, taskObj) {
-    // localStorage.clear();
     const curData = localStorage.getItem(itemName) || "[]";
     const data = JSON.parse(curData);
     data.push(taskObj);
@@ -51,6 +45,7 @@ function createTaskObj(addFrom) {
 function createTaskItem(task) {
     const li = document.createElement('li');
     li.classList.add('mb-task');
+    task.complete && li.classList.add('mb-task--checked');
     li.id = task.id;
     // Task name
     const taskName = document.createElement('p');
@@ -63,17 +58,23 @@ function createTaskItem(task) {
     // Status
     const taskStatus = document.createElement('div');
     taskStatus.classList.add('mb-task-status');
+    taskStatus.addEventListener('click', statusHandler)
 
+    const statusChk = document.createElement('p')
+    statusChk.classList.add('status-check');
+    statusChk.textContent = ' Complete';
     const statusIconChk = document.createElement('i');
     statusIconChk.classList.add('fa-regular', 'fa-square-check', 'status-check');
-
+    statusChk.prepend(statusIconChk)
+    
+    const statusUnchk = document.createElement('p')
+    statusUnchk.classList.add('status-uncheck');
+    statusUnchk.textContent = ' Incomplete';
     const statusIconUnchk = document.createElement('i');
-    statusIconUnchk.classList.add('fa-regular', 'fa-square', 'status-uncheck');
+    statusIconUnchk.classList.add('fa-regular', 'fa-square');
+    statusUnchk.prepend(statusIconUnchk)
 
-    const statusText = document.createElement('p')
-    statusText.textContent = 'Incomplete';
-
-    taskStatus.append(statusIconChk, statusIconUnchk, statusText);
+    taskStatus.append(statusChk, statusUnchk);
 
     // Edit 
     const taskEdit = document.createElement('div');
@@ -108,11 +109,24 @@ function delHandler(e) {
     const curTask = e.currentTarget.parentElement.parentElement;
     const curList = curTask.parentElement;
     const listId = curList.previousElementSibling.id;
-    // console.log(listId)
-    // console.log(curTask, curTask.id)
-    const taskList = JSON.parse(localStorage.getItem(listId)) || [];
+    const taskList = JSON.parse(localStorage.getItem(listId));
     const newTaskList = taskList.filter(t => t.id !== curTask.id);
-    // console.log(taskList.length, newTaskList.length)
     localStorage.setItem(listId, JSON.stringify(newTaskList));
     curList.removeChild(curTask);
+}
+
+function statusHandler(e) {
+    const curTask = e.currentTarget.parentElement.parentElement;
+    const curList = curTask.parentElement;
+    const listId = curList.previousElementSibling.id;
+    const taskList = JSON.parse(localStorage.getItem(listId));
+    const newTaskList = taskList.map(t => {
+        if (t.id === curTask.id) {
+            t.complete = !t.complete;
+        }
+        return t;
+    })
+    localStorage.setItem(listId, JSON.stringify(newTaskList));
+    curTask.classList.toggle('mb-task--checked');
+    console.log(curTask)
 }
