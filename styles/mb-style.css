@@ -87,8 +87,7 @@
   padding: 0.8rem;
   user-select: none;
 
-  p,
-  p& {
+  p, p& {
     font-size: 1.2rem;
     line-height: 1.6rem;
   }
