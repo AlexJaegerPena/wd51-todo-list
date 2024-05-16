@@ -25,10 +25,12 @@
       <div class="main-container">
         <section class="mb-task-section">
           <h3>Mehedi's Task</h3>
-          <form id="mbForm" class="mb-input-btn-container">
+          <div id="mbForm" class="mb-input-btn-container">
             <input type="text" id="mb-input-box" placeholder="type task name" />
+            <input type="hidden" id="saveIndex" />
             <button class="add-btn">Add</button>
-          </form>
+            <button class="update-btn" style="display: none">Update</button>
+          </div>
 
           <ul id="mb-task-container"></ul>
         </section>
