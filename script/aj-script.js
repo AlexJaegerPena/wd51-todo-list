@@ -80,8 +80,8 @@ const ajEditTask = (e) => {
   ajTextInput.value = ajSelectedTask.children[0].innerHTML; //first child of div
   ajDateInput.value = ajSelectedTask.children[1].innerHTML; //second child of div
   ajTextArea.value = ajSelectedTask.children[2].innerHTML; //third child of div
-  ajSelectedTask.remove(); //removes the old edited task
   ajData.splice(ajSelectedTask.id, 1); // Remove the task from the data array
+  ajSelectedTask.remove(); //removes the old edited task
 };
 
 // resets the form to empty fields after submitting
@@ -92,8 +92,9 @@ const ajResetForm = () => {
 };
 
 // retrieve data from localStorage into the app
+// JSON.parse convert data into an array and || [] initializes empty array when there is no data in localStorage
 (() => {
-  ajData = JSON.parse(localStorage.getItem("ajData")) || []; // JSON.parse convert data into an array || [] initialises empty arrray when there is no data in localStorage
+  ajData = JSON.parse(localStorage.getItem("ajData")) || [];
   ajCreateTasks();
   console.log(ajData);
 })();
