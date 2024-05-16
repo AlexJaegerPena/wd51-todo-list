@@ -8,21 +8,22 @@ taskIds.forEach(id => {
 })
 
 // Add event listener for forms submit
-addFroms.forEach(addFrom => {
-    addFrom.addEventListener('submit', (e) => {
+addFroms.forEach(addForm => {
+    addForm.addEventListener('submit', (e) => {
         e.preventDefault();
-        const taskObj = createTaskObj(addFrom)
-        const taskList = updateStorage(e.target.id, taskObj);
+        const taskObj = createTaskObj(addForm)
+        updateStorage(e.target.id, taskObj);
         const curList = addForm.nextElementSibling;
-        curList.append(taskItems);
-        addFrom.reset();
+        curList.prepend(createTaskItem(taskObj));
+        addForm.reset();
     })
 })
 
 function fillTaskList(addForm, taskList) {
     const curList = addForm.nextElementSibling;
     curList.innerHTML = '';
-    const taskItems = taskList.map(t => createTaskItem(t))
+    console.log(taskList.toReversed().map(t => createTaskItem(t)))
+    const taskItems = taskList.toReversed().map(t => createTaskItem(t))
     curList.append(...taskItems);
 }
 
@@ -128,5 +129,4 @@ function statusHandler(e) {
     })
     localStorage.setItem(listId, JSON.stringify(newTaskList));
     curTask.classList.toggle('mb-task--checked');
-    console.log(curTask)
 }

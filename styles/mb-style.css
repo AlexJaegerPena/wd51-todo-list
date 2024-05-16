@@ -52,6 +52,9 @@
 }
 
 #mb-task-container {
+  margin: 0;
+  padding: 0;
+  
   li {
     list-style: none;
     margin-bottom: 1rem;
@@ -66,6 +69,10 @@
   );
   border-radius: 0.4rem;
   box-shadow: 2px 2px 20px rgba(44, 44, 44, 0.3);
+
+  p {
+    margin: 0;
+  }
 }
 
 .mb-task.mb-task--checked .mb-task-status {
