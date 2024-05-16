@@ -22,7 +22,7 @@ addFroms.forEach(addForm => {
 function fillTaskList(addForm, taskList) {
     const curList = addForm.nextElementSibling;
     curList.innerHTML = '';
-    console.log(taskList.toReversed().map(t => createTaskItem(t)))
+    // console.log(taskList.toReversed().map(t => createTaskItem(t)))
     const taskItems = taskList.toReversed().map(t => createTaskItem(t))
     curList.append(...taskItems);
 }
@@ -52,6 +52,14 @@ function createTaskItem(task) {
     const taskName = document.createElement('p');
     taskName.classList.add('mb-task-name', 'mb-checked');
     taskName.textContent = task.task;
+    
+    const cancelBtn = document.createElement('button')
+    cancelBtn.classList.add('mb-task-name__c-btn');
+    cancelBtn.textContent = "✕";
+    cancelBtn.addEventListener('click', stopEditHandler);
+    cancelBtn.setAttribute('contenteditable', 'false');
+    taskName.append(cancelBtn);
+
     // Status area
     const statusArea = document.createElement('div');
     statusArea.classList.add('mb-task-status-area');
@@ -80,6 +88,7 @@ function createTaskItem(task) {
     // Edit 
     const taskEdit = document.createElement('div');
     taskEdit.classList.add('mb-task-edit');
+    taskEdit.addEventListener('click', editHandler);
     
     const editIcon = document.createElement('i');
     editIcon.classList.add('fa-regular', 'fa-pen-to-square');
@@ -88,6 +97,18 @@ function createTaskItem(task) {
     editText.textContent = 'Edit';
 
     taskEdit.append(editIcon, editText);
+    // Save 
+    const taskSave = document.createElement('div');
+    taskSave.classList.add('mb-task-edit', 'mb-task-edit--save');
+    taskSave.addEventListener('click', saveHandler);
+    
+    const saveIcon = document.createElement('i');
+    saveIcon.classList.add('fa-regular', 'fa-save');
+
+    const saveText = document.createElement('p')
+    saveText.textContent = 'Save';
+
+    taskSave.append(saveIcon, saveText);
     // Delete
     const taskDelete = document.createElement('div');
     taskDelete.classList.add('mb-task-delete');
@@ -101,7 +122,7 @@ function createTaskItem(task) {
 
     taskDelete.append(delIcon, delText);
 
-    statusArea.append(taskStatus, taskEdit, taskDelete);
+    statusArea.append(taskStatus, taskEdit, taskSave, taskDelete);
     li.append(taskName, statusArea);
     return li
 }
@@ -129,4 +150,37 @@ function statusHandler(e) {
     })
     localStorage.setItem(listId, JSON.stringify(newTaskList));
     curTask.classList.toggle('mb-task--checked');
+}
+
+function editHandler(e) {
+    const curTask = e.currentTarget.parentElement.parentElement;
+    const curList = curTask.parentElement;
+    if (curList.querySelectorAll("p[contenteditable='plaintext-only']").length === 0) {
+        const listId = curList.previousElementSibling.id;
+        curTask.firstElementChild.setAttribute('contenteditable', 'plaintext-only');
+        curTask.firstElementChild.focus();
+    }            
+}
+
+function saveHandler(e) {
+    const curTask = e.currentTarget.parentElement.parentElement;
+    const curList = curTask.parentElement;
+    const listId = curList.previousElementSibling.id;
+    const taskList = JSON.parse(localStorage.getItem(listId));
+    const newTaskList = taskList.map(t => {
+        if (t.id === curTask.id) {
+            if (!curTask.firstElementChild.textContent.slice(0, -1)) {
+                curTask.firstElementChild.prepend(document.createTextNode(" "));
+            }
+            t.task = curTask.firstElementChild.textContent.slice(0, -1) || " ";
+        }
+        return t;
+    })
+    localStorage.setItem(listId, JSON.stringify(newTaskList));
+    curTask.querySelector('p[contenteditable]').removeAttribute('contenteditable');
+}
+
+function stopEditHandler(e) {
+    const curTask = e.currentTarget.parentElement.parentElement;
+    curTask.querySelector('p[contenteditable]').removeAttribute('contenteditable');
 }

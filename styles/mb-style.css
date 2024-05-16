@@ -54,7 +54,7 @@
 #mb-task-container {
   margin: 0;
   padding: 0;
-  
+
   li {
     list-style: none;
     margin-bottom: 1rem;
@@ -74,9 +74,58 @@
     margin: 0;
   }
 }
+/* Styles for cancel edit button */
+.mb-task-name {
+  position: relative;
+  
+  .mb-task-name__c-btn {
+    display: none;
+    position: absolute;
+    right: .5rem;
+    border: none;
+    background-color: #949494;
+    padding: .15rem .4rem;
+    border-radius: .2rem;
+    cursor: pointer;
+  }
+  
+  &[contenteditable] .mb-task-name__c-btn {
+    display: inline;
+  }
+  
+}
+/* Styles for cancel save button */
 
-.mb-task.mb-task--checked .mb-task-status {
-  background-color: #949494;
+.mb-task-edit.mb-task-edit--save {
+  display: none;
+  background-color: rgb(12, 68, 141);
+}
+
+.mb-task:has(p[contenteditable='plaintext-only']) {
+
+  .mb-task-edit {
+    display: none;
+  }
+
+  .mb-task-edit.mb-task-edit--save {
+    display: flex;
+  }
+}
+
+
+/* Styles for comlete tasks */
+.mb-task.mb-task--checked {
+
+  .mb-task-name {
+    color: color-mix(in srgb, currentColor 60%, transparent);
+    text-decoration: #14998e .3rem underline;
+    text-underline-offset: -.5rem;
+    text-decoration-skip-ink: none;
+  }
+  
+  .mb-task-status {
+    background-color: #949494;
+  }
 
   .status-check {
     display: inline;
@@ -85,13 +134,18 @@
   .status-uncheck {
     display: none;
   }
+
+  .mb-task-edit {
+    display: none;
+  }
 }
 
 .mb-task-name {
   text-align: left;
   width: 100%;
   min-height: 64px;
-  padding: 0.8rem;
+  padding-block: 0.8rem;
+  padding-inline: 0.8rem 2.2rem;
   user-select: none;
 
   p, p& {
@@ -142,7 +196,8 @@
   flex-direction: row;
   align-items: center;
   gap: 0.4rem;
-  width: 100%;
+  flex: 1;
+  /* width: 100%; */
   background-color: #14998e;
   color: rgb(255, 255, 255);
   border-radius: 0 0 0 0.4rem;
