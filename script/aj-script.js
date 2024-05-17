@@ -5,7 +5,7 @@ const ajDateInput = document.getElementById("aj-dateInput");
 const ajTextArea = document.getElementById("aj-textarea");
 const ajTasks = document.getElementById("aj-tasks");
 const ajAddBtnBehave = document.getElementById("aj-add-btn-behave");
-console.log(ajTasks);
+
 form.addEventListener("submit", (e) => {
   e.preventDefault();
   ajFormValidation();
@@ -99,5 +99,4 @@ const ajResetForm = () => {
 (() => {
   ajData = JSON.parse(localStorage.getItem("ajData")) || []; // JSON.parse convert data into an array || [] initialises empty arrray when there is no data in localStorage
   ajCreateTasks();
-  console.log(ajData);
 })();

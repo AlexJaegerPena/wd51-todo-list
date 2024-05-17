@@ -70,7 +70,7 @@ function completeTask(e) {
   e.style.backgroundColor = "#e07a5f";
   const nextElement = e.nextElementSibling;
   const TaskNameElm = e.parentElement.previousElementSibling;
-  nextElement.remove();
+  nextElement && nextElement.remove();
   e.lastElementChild.innerHTML = "Task is completed";
   TaskNameElm.style.textDecoration = "line-through";
   TaskNameElm.style.backgroundColor = "#f5ebe0";
