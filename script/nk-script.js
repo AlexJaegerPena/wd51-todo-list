@@ -1,3 +1,5 @@
+let oldText = "" // Here saved old version of text ehile task edited
+
 const addFroms = document.querySelectorAll('.add-form');
 
 // Fill tasks from localStorage on first loading
@@ -156,9 +158,10 @@ function editHandler(e) {
     const curTask = e.currentTarget.parentElement.parentElement;
     const curList = curTask.parentElement;
     if (curList.querySelectorAll("p[contenteditable='plaintext-only']").length === 0) {
-        const listId = curList.previousElementSibling.id;
-        curTask.firstElementChild.setAttribute('contenteditable', 'plaintext-only');
-        curTask.firstElementChild.focus();
+        const editNode = curTask.firstElementChild
+        oldText = editNode.childNodes[0].textContent;
+        editNode.setAttribute('contenteditable', 'plaintext-only');
+        editNode.focus();
     }            
 }
 
@@ -169,7 +172,7 @@ function saveHandler(e) {
     const taskList = JSON.parse(localStorage.getItem(listId));
     const newTaskList = taskList.map(t => {
         if (t.id === curTask.id) {
-            if (!curTask.firstElementChild.textContent.slice(0, -1)) {
+            if (!curTask.firstElementChild.childNodes[0].nodeType !== 3) {
                 curTask.firstElementChild.prepend(document.createTextNode(" "));
             }
             t.task = curTask.firstElementChild.textContent.slice(0, -1) || " ";
@@ -182,5 +185,8 @@ function saveHandler(e) {
 
 function stopEditHandler(e) {
     const curTask = e.currentTarget.parentElement.parentElement;
-    curTask.querySelector('p[contenteditable]').removeAttribute('contenteditable');
+    editNode = curTask.querySelector('p[contenteditable]')
+    editNode.removeAttribute('contenteditable');
+    editNode.childNodes[0].textContent = oldText;
+    oldText = "";
 }
