@@ -89,25 +89,14 @@ function completeTask(e) {
 
 // Edit task
 function editTask(index) {
-  let editTaskContent = arrFromLocal[index];
-  console.log(editTaskContent);
-  console.log(typeof editTaskContent);
   arrFromLocal = JSON.parse(localStorage.getItem("mbtask-list"));
   const saveIndex = document.getElementById("saveIndex");
-  // console.log(`"edit button clicked" ${index}`);
   saveIndex.value = index;
   inputBox.value = arrFromLocal[index];
   updateTaskBtn.style.display = "block";
   updateTaskBtn.style.backgroundColor = "#fb8500";
   addBtn.style.display = "none";
-  // console.log(arrFromLocal[index]);
 
-  // addBtn.innerHTML = "Update";
-  // console.log("edit button clicked");
-  // const taskNamePara = document.querySelector(".mb-checked");
-  // inputBox.value = taskNamePara.innerText;
-  // addBtn.innerHTML = "Update";
-  // deleteTask(e);
   localStorage.setItem("mbtask-list", JSON.stringify(arrFromLocal));
 }
 
@@ -126,18 +115,14 @@ updateTaskBtn.addEventListener("click", () => {
 });
 // Delete task
 function deleteTask(index) {
-  // let selectListContainer = e.parentElement.parentElement.parentElement;
-  // selectListContainer.remove();
-
-  // alert("Do you realy want to delete your task?");
+  alert("Do you realy want to delete your task?");
   arrFromLocal.splice(index, 1);
   localStorage.setItem("mbtask-list", JSON.stringify(arrFromLocal));
   addBtn.style.display = "block";
   updateTaskBtn.style.display = "none";
   inputBox.value = "";
+  // console.log(deletedTask);
   createTasksMb();
-
-  // console.log(`The tast index number is: ${selectListContainer.id}`);
 }
 
 (() => {
