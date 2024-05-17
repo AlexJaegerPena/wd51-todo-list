@@ -5,7 +5,7 @@ const ajDateInput = document.getElementById("aj-dateInput");
 const ajTextArea = document.getElementById("aj-textarea");
 const ajTasks = document.getElementById("aj-tasks");
 const ajAddBtnBehave = document.getElementById("aj-add-btn-behave");
-
+console.log(ajTasks);
 form.addEventListener("submit", (e) => {
   e.preventDefault();
   ajFormValidation();
@@ -45,6 +45,9 @@ const ajAcceptData = () => {
   ajCreateTasks();
 };
 
+ajChangeIcon = (icon) =>
+  icon.classlist.toggle("fa-regular fa-square status-uncheck");
+
 const ajCreateTasks = () => {
   ajTasks.innerHTML = ""; // += to not replace the old content
   ajData.map((x, y) => {
@@ -69,9 +72,6 @@ const ajCheckTask = (e) => {
   e.parentElement.parentElement.style["color"] = "grey";
 };
 
-const statusIconChk = document.createElement("i");
-statusIconChk.classList.add("fa-regular", "fa-square-check", "status-check");
-
 // selects the parent div and removes it
 const ajDeleteTask = (e) => {
   e.parentElement.parentElement.remove();
@@ -84,8 +84,8 @@ const ajEditTask = (e) => {
   ajTextInput.value = ajSelectedTask.children[0].innerHTML; //first child of div
   ajDateInput.value = ajSelectedTask.children[1].innerHTML; //second child of div
   ajTextArea.value = ajSelectedTask.children[2].innerHTML; //third child of div
+  ajSelectedTask.remove(); //removes the old edited task
   ajData.splice(ajSelectedTask.id, 1); // Remove the task from the data array
-  // ajSelectedTask.remove(); //removes the old edited task
 };
 
 // resets the form to empty fields after submitting
