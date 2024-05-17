@@ -66,7 +66,11 @@ const ajCreateTasks = () => {
 // --------  needs revision (also line 57) ----------
 const ajCheckTask = (e) => {
   e.parentElement.parentElement.style["text-decoration"] = "line-through";
+  e.parentElement.parentElement.style["color"] = "grey";
 };
+
+const statusIconChk = document.createElement("i");
+statusIconChk.classList.add("fa-regular", "fa-square-check", "status-check");
 
 // selects the parent div and removes it
 const ajDeleteTask = (e) => {
@@ -80,8 +84,8 @@ const ajEditTask = (e) => {
   ajTextInput.value = ajSelectedTask.children[0].innerHTML; //first child of div
   ajDateInput.value = ajSelectedTask.children[1].innerHTML; //second child of div
   ajTextArea.value = ajSelectedTask.children[2].innerHTML; //third child of div
-  ajSelectedTask.remove(); //removes the old edited task
   ajData.splice(ajSelectedTask.id, 1); // Remove the task from the data array
+  // ajSelectedTask.remove(); //removes the old edited task
 };
 
 // resets the form to empty fields after submitting

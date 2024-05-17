@@ -4,6 +4,7 @@
   padding: 2rem 1.4rem;
   color: rgb(20, 20, 20);
   box-shadow: 2px 2px 16px rgba(63, 62, 0, 0.2);
+  max-width: auto;
 
   h3 {
     color: rgb(255, 255, 255);
@@ -71,6 +72,10 @@
   padding-left: 2rem;
   display: grid;
   gap: 0.5rem;
+}
+
+#aj-tasks div p {
+  padding-right: 1.5rem;
 }
 
 .aj-options {
